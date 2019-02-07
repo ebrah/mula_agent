@@ -2,8 +2,8 @@
 
   class Layout extends CI_Controller{
 
-    public function __constructor(){
-       parent::__constructor();
+    public function __construct(){
+       parent::__construct();
     }
 
     public function main_layout($main){

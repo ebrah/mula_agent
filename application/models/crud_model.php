@@ -13,13 +13,13 @@
      //get data
      public function get($id = null, $order_by = null){
 
-           if( is_array($id)){            
+           if( is_array($id)){    
+               print_r($id);        
              foreach ($id as $key => $value) {
                 $this->db->where($key, $value);
              }
            }
-
-           if( is_numeric($id)){
+           if(is_numeric($id)){
              $this->db->where($this->_primary_key, $id);
            }
 
@@ -30,8 +30,12 @@
 
      //insert data
      public function insert($data){
-         $this->db->insert($this->_table, $data);
+         $insert_query = $this->db->insert_string($this->_table, $data);
+         $insert_query = str_replace('INSERT INTO', 'INSERT IGNORE INTO', $insert_query);
+         $this->db->query($insert_query);
+        //  $this->db->insert($this->_table, $data);
          return $this->db->insert_id();
+         
      }
 
      //delete data
