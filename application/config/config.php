@@ -13,6 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          if( $class == 'crud_model'){
            include APPPATH. 'models/'. $class . '.php';
          }
+
   });
 
 

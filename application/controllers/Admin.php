@@ -5,10 +5,12 @@
       public function __construct(){
           parent::__construct();
           $this->load->model('user');
+          $this->load->model('commission');
       }
 
       public function dashboard(){
-         $this->main_layout('pages/dashboard/admin');
+         $data['commission'] = $this->commission->get();
+         $this->dashboard_layout('pages/dashboard/admin', $data);
       }
 
       public function login(){
@@ -89,6 +91,38 @@
    //   public function index(){
    //      $this->output->enable_profiler(TRUE);
    //   }
+
+   public function commission_form(){
+
+      $this->dashboard_layout('pages/dashboard/commission_form');
+
+   }
+
+   public function add_commission(){
+
+      $date = $this->input->post('date');
+      $agentcode = $this->input->post('agentcode');
+      $halotel = $this->input->post('halotel');
+      $dstv = $this->input->post('dstv');
+      $ttcl = $this->input->post('ttcl');
+      $startimes = $this->input->post('startimes');
+      $commission = $this->input->post('commission');
+      $azamtv = $this->input->post('azamtv');
+
+
+      $this->commission->insert_new_commission([
+          'date' =>  $date,
+          'agentcode' =>  $agentcode,
+          'startimes' => $startimes,
+          'azamtv' =>  $azamtv,
+          'dstv' => $dstv,
+          'ttcl' => $ttcl,
+          'dstv' => $dstv,
+          'halotel' => $halotel,
+          'total_commission' => $commission
+      ]);
+
+   }
 
   }
 ?>

@@ -14,7 +14,7 @@
      public function get($id = null, $order_by = null){
 
            if( is_array($id)){    
-               print_r($id);        
+                      
              foreach ($id as $key => $value) {
                 $this->db->where($key, $value);
              }
@@ -26,6 +26,18 @@
            $result = $this->db->get($this->_table);
            return $result->result();
 
+     }
+
+     //fetch
+     public function fetch_($_new_table, $item ){
+         if(is_array($item)){
+            $this->db->where($item);
+            $result = $this->db->get($_new_table);
+            return $result->result();
+         }else{
+             die('second parameter of fetch_() should be an array');
+         }
+         
      }
 
      //insert data

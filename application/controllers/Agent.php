@@ -4,6 +4,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Agent extends Layout {
 
+	public function __construct(){
+		parent::__construct();
+	}
+
 	public function index()
 	{
 	

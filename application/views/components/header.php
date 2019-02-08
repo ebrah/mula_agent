@@ -1,8 +1,4 @@
-<?php
-   if(empty($this->session->userdata('user_id')) && empty($this->session->userdata('email'))){
-       redirect(base_url().'agent');
-   }
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
