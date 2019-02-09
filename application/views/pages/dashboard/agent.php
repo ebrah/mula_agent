@@ -1,5 +1,5 @@
 
- <h4>Agents commission.</h4>
+ <h4>Agent commission.</h4>
       <div class="table-responsive">
        <?php 
        if(!empty($commission)){?>
@@ -24,13 +24,15 @@
              foreach ($commission as $comm) {?>
              <tr>
               <td> <?php echo $comm->date;?></td>
-              <td> <a href=""> <?php echo $comm->agentcode;?> </a> </td>
+              <td> <b> <?php echo $comm->agentcode;?> </b> </td>
               <td> <?php echo $comm->startimes;?> </td>
               <td> <?php echo $comm->azamtv;?> </td>
               <td> <?php echo $comm->dstv;?> </td>
               <td> <?php echo $comm->halotel;?> </td>
               <td> <?php echo $comm->ttcl;?> </td>
               <td> <?php echo $comm->total_commission;?> </td>
+              <td> <?php echo $comm->weekly_commission;?> </td>
+
              </tr> 
           <?php 
              }

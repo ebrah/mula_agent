@@ -16,6 +16,7 @@
               <th>Halotel</th>
               <th>TTCL</th>
               <th>Commission</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -24,13 +25,17 @@
              foreach ($commission as $comm) {?>
              <tr>
               <td> <?php echo $comm->date;?></td>
-              <td> <a href=""> <?php echo $comm->agentcode;?> </a> </td>
+              <td> <a href="<?php echo base_url();?>agent/get_commission/<?php echo $comm->agentcode;?>"> <?php echo $comm->agentcode;?> </a> </td>
               <td> <?php echo $comm->startimes;?> </td>
               <td> <?php echo $comm->azamtv;?> </td>
               <td> <?php echo $comm->dstv;?> </td>
               <td> <?php echo $comm->halotel;?> </td>
               <td> <?php echo $comm->ttcl;?> </td>
               <td> <?php echo $comm->total_commission;?> </td>
+              <td> 
+              <a href="<?php echo base_url()?>admin/edit_commission/<?php echo $comm->id;?>"  class="badge badge-success">Edit</a>
+              <a href="<?php echo base_url()?>admin/delete_commission/<?php echo $comm->id;?>"  class="badge badge-danger">Delete</a>
+              </td>
              </tr> 
           <?php 
              }

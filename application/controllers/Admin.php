@@ -124,5 +124,51 @@
 
    }
 
+   public function edit_commission(){
+       $id = $this->uri->segment(3);
+       $data['comm'] = $this->commission->get($id);
+       $this->dashboard_layout('pages/dashboard/edit_commission', $data);
+        
+   }
+
+   public function edited_commission(){
+      $id= $this->input->post('id');
+      $date = $this->input->post('date');
+      $agentcode = $this->input->post('agentcode');
+      $halotel = $this->input->post('halotel');
+      $dstv = $this->input->post('dstv');
+      $ttcl = $this->input->post('ttcl');
+      $startimes = $this->input->post('startimes');
+      $commission = $this->input->post('commission');
+      $azamtv = $this->input->post('azamtv');
+      $prv_commission = $this->input->post('prv_commission');
+      $prv_code = $this->input->post('prv_agentcode');
+      $prv_date = $this->input->post('prv_date');
+
+      $this->commission->submit_edited_comm([
+         'date' =>  $date,
+         'agentcode' =>  $agentcode,
+         'startimes' => $startimes,
+         'azamtv' =>  $azamtv,
+         'dstv' => $dstv,
+         'ttcl' => $ttcl,
+         'dstv' => $dstv,
+         'halotel' => $halotel,
+         'total_commission' => $commission
+      ],[
+          'id' => $id,
+          'amount' => $prv_commission,
+          'date' => $prv_date,
+          'agentcode' => $prv_code
+      ]);
+
+      // $this->output->enable_profiler(TRUE);
+   }
+
+   public function delete_commission(){
+      $id = $this->uri->segment(3);
+      echo $id;
+   }
+
   }
 ?>
