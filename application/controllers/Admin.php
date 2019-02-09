@@ -18,6 +18,8 @@
       }
 
       public function do_login(){
+         $ag = $this->uri->segment(3);
+
          $email = $this->input->post('email');
          $password = $this->input->post('password');
 
@@ -27,7 +29,7 @@
 
          if(empty($result)){
             $this->session->set_flashdata('FAIL', 'Invalid credential entered!.');
-            redirect(base_url().'admin/login');
+            ($ag == 'agent')? redirect(base_url().'agent') : redirect(base_url().'admin/login');
          }
 
          foreach ($result as $row)
@@ -36,12 +38,15 @@
                   $this->session->set_flashdata('SUCCESS', 'Welcome!.');
                   $this->session->set_userdata(array(
                      'user_id' => $row->id,
-                     'email' => $row->email
+                     'email' => $row->email,
+                     'agent' => $row->agent,
+                     'active' => $row->active
                   ));
-                  $this->dashboard();
+                  
+                  ($row->agent == 1)? redirect(base_url().'agent/get_commission/'.$row->code) : $this->dashboard();
                }else{
                   $this->session->set_flashdata('FAIL', 'Invalid credential entered!.');
-                  redirect(base_url().'admin/login');
+                  ($row->agent == 1)? redirect(base_url().'agent') : redirect(base_url().'admin/login');
                }
          }
 
@@ -53,24 +58,41 @@
       }
    
       public function ad_register(){
-      
-       $email = $this->input->post('email');
-       $password = $this->input->post('password');
 
-        $no = $this->user->insert(array(
+        $ag = $this->uri->segment(3);
+
+        $email = $this->input->post('email');
+        $password = $this->input->post('password');
+        if($ag == 'agent'){
+         $code = $this->input->post('agentcode');
+            
+         $no = $this->user->insert(array(
+            'code' => $code,
+            'email' => $email,
+            'password' => password_hash($password, PASSWORD_DEFAULT),
+            'agent' => TRUE,
+            'active' => TRUE
+         ));
+   
+        }else{
+            
+         $no = $this->user->insert(array(
             'email' => $email,
             'password' => password_hash($password, PASSWORD_DEFAULT),
             'agent' => FALSE,
             'active' => TRUE
          ));
+   
+        }
 
          if($no ){
             $this->session->set_flashdata('SUCCESS', 'You are successful registered.');
          }else{
             $this->session->set_flashdata('FAIL', 'Registration fail. Email already used.');
-            redirect(base_url()."admin/register");
+            ($ag == 'agent')? redirect(base_url()."agent/register") : redirect(base_url()."admin/register");
          }
-          redirect(base_url()."admin/login");
+         
+         ($ag == 'agent')? redirect(base_url()."agent") : redirect(base_url()."admin/login");
       }
 
      public function get_admins(){
@@ -167,7 +189,10 @@
 
    public function delete_commission(){
       $id = $this->uri->segment(3);
-      echo $id;
+      $n =  $this->commission->delete($id);
+      if($n > 0){
+         $this->dashboard();
+      }
    }
 
   }

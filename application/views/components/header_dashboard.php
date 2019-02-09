@@ -1,20 +1,16 @@
 <?php
- $base = $this->uri->slash_segment(1); 
-//  echo $base;
- function check_who_log(){
-    if(empty($this->session->userdata('user_id')) && empty($this->session->userdata('email'))){
+ 
+
+    if(!$this->session->has_userdata('user_id') && !$this->session->has_userdata('email')){
         redirect(base_url().'agent');
     }
- }
- switch ($base) {
-     case 'value':
-         # code...
-         break;
-     
-     default:
-         # code...
-         break;
- }
+
+    if($this->session->userdata('active') != 1 ){
+        echo $this->session->userdata('active');
+        $this->session->set_flashdata('FAIL', 'Your account is locked you can\'t access.');
+        redirect(base_url().'agent');
+    }
+
 
 ?>
 <!DOCTYPE html>
