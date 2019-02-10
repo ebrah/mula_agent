@@ -22,6 +22,7 @@
 
           <?php
              foreach ($commission as $comm) {?>
+
              <tr>
               <td> <?php echo $comm->date;?></td>
               <td> <b> <?php echo $comm->agentcode;?> </b> </td>
@@ -31,7 +32,10 @@
               <td> <?php echo $comm->halotel;?> </td>
               <td> <?php echo $comm->ttcl;?> </td>
               <td> <?php echo $comm->total_commission;?> </td>
+            
               <td> <?php echo $comm->weekly_commission;?> </td>
+              
+          
 
              </tr> 
           <?php 

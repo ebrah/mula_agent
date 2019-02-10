@@ -19,9 +19,7 @@
 
           <?php
              foreach ($agents as $agent) {
-                 
-                 if($agent->code){?>
-
+                 if($agent->code){ ?>
              <tr>
               <td> <?php echo $agent->code;?></td>
               <td> <?php echo $agent->email;?> </td>
@@ -29,7 +27,6 @@
                      echo '<span class ="badge badge-success"> active </span>';    
                 }else{
                       echo '<span class ="badge badge-danger"> not active </span>';    
-  
                 }?> 
               </td>
               <td> 

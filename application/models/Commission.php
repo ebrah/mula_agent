@@ -38,6 +38,10 @@
 
      public function insert_weekly_commission($date, $code, $commission ){
         $result = $this->fetch_('weekly', ['agentcode' => $code ]);
+        echo '<pre>';
+        echo 'result after fetch specific agent code';
+        print_r($result);
+
         if(empty($result)){
              $new_date = $this->getWeekDates($date);
             //new insert
@@ -56,7 +60,7 @@
             }; 
             
         }else{
-            $affected;
+            $affected = 0;
             //update
             foreach ($result as $value) {
                 $start_date = $value->start_week_date;
@@ -72,6 +76,9 @@
                     ]);
                 }
             }
+
+          echo 'affected results ';
+          print_r($affected);
 
           if($affected){
             $this->session->set_flashdata('SUCCESS', 'Successfuly commission added!.');
@@ -111,10 +118,9 @@
         
             if(is_numeric($code)){
                 $ql = "SELECT c.id, c.date, c.agentcode, c.startimes, c.azamtv, c.halotel, c.ttcl, c.dstv, c.total_commission, w.weekly_commission
-                FROM commission c INNER JOIN weekly w ON c.agentcode = w.agentcode WHERE c.agentcode = ". $this->db->escape($code) . " GROUP BY w.weekly_commission";
-
+                FROM commission c INNER JOIN weekly w ON c.agentcode = w.agentcode WHERE c.agentcode = ". $this->db->escape($code) . "";
+                
                 $result = $this->db->query($ql);
-
                 return $result->result();
             }
 

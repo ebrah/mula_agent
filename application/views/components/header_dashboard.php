@@ -6,7 +6,6 @@
     }
 
     if($this->session->userdata('active') != 1 ){
-        echo $this->session->userdata('active');
         $this->session->set_flashdata('FAIL', 'Your account is locked you can\'t access.');
         redirect(base_url().'agent');
     }
