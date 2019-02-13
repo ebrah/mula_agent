@@ -9,7 +9,7 @@
       }
 
       public function dashboard(){
-         $data['commission'] = $this->commission->get();
+         $data['commission'] = $this->commission->get('','date');
          $this->dashboard_layout('pages/dashboard/admin', $data);
       }
 
@@ -97,22 +97,15 @@
 
      public function get_admins(){
          $result = $this->user->get();
-         echo '<pre>';
-         print_r($result);
+         // echo '<pre>';
+         // print_r($result);
      }
     
      public function delete_admin(){
        $result =  $this->user->delete(array(
-            'email' => 'jameebrav@gmail.com'
+            'email' => ''
         ));
-
-        echo '<pre>';
-        print_r($result);
      }
-
-   //   public function index(){
-   //      $this->output->enable_profiler(TRUE);
-   //   }
 
    public function commission_form(){
 
@@ -189,7 +182,31 @@
 
    public function delete_commission(){
       $id = $this->uri->segment(3);
-      $n =  $this->commission->delete($id);
+      $comm =  $this->commission->get($id);
+
+      // echo '<pre>';
+      // print_r($comm);
+
+      if(empty($comm)){
+         die(' I term requested to delete is not avaiable');
+      }
+
+      foreach ($comm as $c) {
+         $date =   $c->date;
+         $agentcode =   $c->agentcode;
+         $total_commission =   $c->total_commission;
+      }
+
+      $this->commission->delete_weekly_comm([
+         'date' => $date,
+         'agentcode' => $agentcode,
+         'total_commission' => $total_commission
+      ]);
+
+      $this->commission->toggle_fk(TRUE);
+        $n =  $this->commission->delete($id);
+      $this->commission->toggle_fk(TRUE);
+
       if($n > 0){
          $this->dashboard();
       }

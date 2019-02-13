@@ -22,8 +22,12 @@
            if(is_numeric($id)){
              $this->db->where($this->_primary_key, $id);
            }
-
+           if($order_by != null  ){
+             $this->db->order_by($order_by);
+           }
+           $this->db->limit(70);
            $result = $this->db->get($this->_table);
+                   
            return $result->result();
 
      }

@@ -37,10 +37,14 @@
 
 
      public function insert_weekly_commission($date, $code, $commission ){
-        $result = $this->fetch_('weekly', ['agentcode' => $code ]);
-        echo '<pre>';
-        echo 'result after fetch specific agent code';
-        print_r($result);
+        $n_date = $this->getWeekDates($date);
+        $result = $this->fetch_('weekly', ['agentcode' => $code, 
+               'start_week_date' => $n_date['start'],
+               'end_week_date' => $n_date['end']
+        ]);
+        // echo '<pre>';
+        // echo 'result after fetch specific agent code';
+        // print_r($result);
 
         if(empty($result)){
              $new_date = $this->getWeekDates($date);
@@ -51,7 +55,7 @@
                 'agentcode' => $code,
                 'weekly_commission' => $commission
             ]);
-              
+             
             if($r){
                 $this->session->set_flashdata('SUCCESS', 'Successfuly commission added!.');
                 redirect(base_url().'admin/dashboard');
@@ -77,8 +81,8 @@
                 }
             }
 
-          echo 'affected results ';
-          print_r($affected);
+        //   echo 'affected results ';
+        //   print_r($affected);
 
           if($affected){
             $this->session->set_flashdata('SUCCESS', 'Successfuly commission added!.');
@@ -115,16 +119,43 @@
 
      //commission for specific agent
      public function agent_commission($code){
-        
+
+            $bucket = [];
+            $week= [];
             if(is_numeric($code)){
-                $ql = "SELECT c.id, c.date, c.agentcode, c.startimes, c.azamtv, c.halotel, c.ttcl, c.dstv, c.total_commission, w.weekly_commission
-                FROM commission c INNER JOIN weekly w ON c.agentcode = w.agentcode WHERE c.agentcode = ". $this->db->escape($code) . "";
-                
-                $result = $this->db->query($ql);
-                return $result->result();
+                $w_comm = $this->fetch_('weekly', [' agentcode' => $code ]);
+               
+                foreach ($w_comm as $comm ) {
+                    $week = [];
+                    $this->db->order_by('date');
+                  $result = $this->get([ 
+                      'agentcode' => $comm->agentcode,
+                      'date >=' => $comm->start_week_date,
+                      'date <=' => $comm->end_week_date
+                  ]);
+
+                  foreach ($result as $value) {
+                       $week [] = $value;
+                  }
+          
+                  $bucket[] = [ 'weekly' => $week, 'week_commission' => $comm->weekly_commission ];
+                }
+
+                return $bucket;
             }
 
       }
+
+    public function fetch_total_wk_comm($data){
+        $this->db->select('weekly_commission');
+        $this->db->where([
+            'start_week_date <=' => $data['date'],
+            'end_week_date >= ' => $data['date'],
+            'agentcode' => $data['agentcode']
+        ]);
+        $res_ = $this->db->get('weekly');
+        return $res_->result();
+    }
 
      //editing commission
      public function submit_edited_comm($data, $id){
@@ -132,17 +163,17 @@
         $r = $this->update($data, $id['id']);
         if($r > 0){
 
-            $this->db->select('weekly_commission');
-            $this->db->where([
-                'start_week_date <=' => $id['date'],
-                'end_week_date >= ' => $id['date'],
-                'agentcode' => $id['agentcode']
-            ]);
-            $res_ = $this->db->get('weekly');
+            // $this->db->select('weekly_commission');
+            // $this->db->where([
+            //     'start_week_date <=' => $id['date'],
+            //     'end_week_date >= ' => $id['date'],
+            //     'agentcode' => $id['agentcode']
+            // ]);
+            $res_ = fetch_total_wk_comm(['date' => $id['date'], 'agentcode' => $id['agentcode']]);
 
             $oldamount = 0;
 
-            foreach($res_->result() as $value) {
+            foreach($res_ as $value) {
                 $oldamount = $value->weekly_commission;
             } 
            
@@ -171,6 +202,54 @@
             die('does not affect any row');
         }
      }
+
+   public function delete_weekly_comm($data){
+         $check_date = $this->getWeekDates($data['date']);
+         $old = $this->fetch_total_wk_comm(['date' => $data['date'], 'agentcode' => $data['agentcode']]);
+          if(empty($old)){
+             die('The weekly commission is not available');
+          }
+          foreach ($old as $o) {
+             $old_amount =  $o->weekly_commission;
+          }
+
+          $this->db->where([
+            'start_week_date' => $check_date['start'],
+            'end_week_date' => $check_date['end'],
+            'agentcode' => $data['agentcode']
+          ]);
+
+         $this->db->update('weekly', [
+            'weekly_commission' => ($old_amount - $data['total_commission'])
+        ]);
+
+        //delete weekly_commission if equal to 0
+        $old_w = $this->fetch_total_wk_comm(['date' => $data['date'], 'agentcode' => $data['agentcode']]);
+
+        foreach ($old_w as $w ) {
+           if($w->weekly_commission == 0 OR $w->weekly_commission <= 0 ){
+              //delete this
+              $this->db->where([
+                  'agentcode' => $data['agentcode'],
+                  'start_week_date' => $check_date['start'],
+                  'end_week_date' => $check_date['end']
+              ]);
+              $this->db->delete('weekly');
+           }
+        }
+   }
+
+
+   public function toggle_fk($bol){
+       if($bol){
+           $this->db->query('SET FOREIGN_KEY_CHECKS = 0');
+       }else{
+          $this->db->query('SET FOREIGN_KEY_CHECKS = 1');  
+       }
+   }
+
  
  }
+
+
 ?>

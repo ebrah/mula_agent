@@ -21,22 +21,25 @@
           <tbody>
 
           <?php
-             foreach ($commission as $comm) {?>
+             foreach ($commission as $comm) {
 
-             <tr>
-              <td> <?php echo $comm->date;?></td>
-              <td> <b> <?php echo $comm->agentcode;?> </b> </td>
-              <td> <?php echo $comm->startimes;?> </td>
-              <td> <?php echo $comm->azamtv;?> </td>
-              <td> <?php echo $comm->dstv;?> </td>
-              <td> <?php echo $comm->halotel;?> </td>
-              <td> <?php echo $comm->ttcl;?> </td>
-              <td> <?php echo $comm->total_commission;?> </td>
-            
-              <td> <?php echo $comm->weekly_commission;?> </td>
+               $count = 0;
+                
+              foreach ($comm['weekly'] as $day): ?>
+
+                  <tr>
+                  <td> <?php echo $day->date; ?></td>
+                  <td> <b> <?php echo $day->agentcode?> </b> </td>
+                  <td> <?php echo $day->startimes;?> </td>
+                  <td> <?php echo $day->azamtv;?> </td>
+                  <td> <?php echo $day->dstv;?> </td>
+                  <td> <?php echo $day->halotel;?> </td>
+                  <td> <?php echo $day->ttcl;?> </td>
+                  <td> <?php echo $day->total_commission;   $count += 1; ?> </td>
+                  
+             <?php endforeach; ?>
+              <td rowspan="<?php echo $count; ?>"> <?php echo $comm['week_commission']; ?> </td>
               
-          
-
              </tr> 
           <?php 
              }
