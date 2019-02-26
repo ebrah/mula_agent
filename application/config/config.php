@@ -6,11 +6,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  custom config
 */
  spl_autoload_register(function($class){
-        $class = strtolower($class);
-         if($class == 'layout'){
+        $class =  ucfirst($class);
+         if($class == 'Layout'){
            include APPPATH. 'controllers/'. $class . '.php';
          }
-         if( $class == 'crud_model'){
+         if( $class == 'Crud_model'){
+           include APPPATH. 'models/'. $class . '.php';
+         }
+         if( $class == 'Price_model'){
            include APPPATH. 'models/'. $class . '.php';
          }
 

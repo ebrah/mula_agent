@@ -1,5 +1,5 @@
 <?php
- class User extends CRUD_model{
+ class User extends Crud_model{
      protected $_table = 'user';
      protected $_primary_key = 'id';
 

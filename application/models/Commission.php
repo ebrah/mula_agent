@@ -1,5 +1,5 @@
 <?php
- class Commission extends CRUD_model{
+ class Commission extends Crud_model{
      protected $_table = 'commission';
      protected $_primary_key = 'id';
 

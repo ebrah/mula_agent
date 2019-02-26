@@ -1,10 +1,13 @@
 
- 
-
       <h4>Agents </h4>
       <div class="table-responsive">
        <?php 
-       if(!empty($agents)){?>
+       if(!empty($agents)){
+         
+          print_r(empty($agents));
+          print_r($agents);
+         ?>
+
         <table class="table table-striped table-sm">
           <thead>
             <tr>
@@ -55,7 +58,7 @@
         <?php
            }else{
               echo '<pre>';
-              echo 'no commission available now.';
+              echo 'No any agent registered yet.';
            }
         ?>
         

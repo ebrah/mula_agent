@@ -6,10 +6,11 @@
           parent::__construct();
           $this->load->model('user');
           $this->load->model('commission');
+          $this->load->model('price_model');
       }
 
       public function dashboard(){
-         $data['commission'] = $this->commission->get('','date');
+         $data['commission'] = $this->commission->get('','date','','');
          $this->dashboard_layout('pages/dashboard/admin', $data);
       }
 
@@ -25,7 +26,7 @@
 
          $result = $this->user->get(array( 
                'email' => $email
-         ));
+         ), '', '', '');
 
          if(empty($result)){
             $this->session->set_flashdata('FAIL', 'Invalid credential entered!.');
@@ -108,8 +109,8 @@
      }
 
    public function commission_form(){
-
-      $this->dashboard_layout('pages/dashboard/commission_form');
+      $data['prices'] = $this->price_model->get();
+      $this->dashboard_layout('pages/dashboard/commission_form', $data);
 
    }
 
@@ -210,6 +211,19 @@
       if($n > 0){
          $this->dashboard();
       }
+   }
+
+   public function change_price(){
+      $price = [
+         'startimes'=> $this->input->post('starPrice'),
+         'azamtv' => $this->input->post('azamPrice'),
+         'dstv' => $this->input->post('dstvPrice'),
+         'halotel' => $this->input->post('halotelPrice'),
+         'ttcl' => $this->input->post('ttclPrice')
+      ];  
+
+      $result = $this->price_model->update($price, $this->input->post('id'));
+      redirect(base_url()."admin/commission_form");
    }
 
   }

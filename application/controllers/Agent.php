@@ -35,8 +35,9 @@ class Agent extends Layout {
 	}
 
 	public function get_agents(){
-		$data['agents'] = $this->user->get();
-		$this->dashboard_layout('pages/dashboard/agents', $data);
+		$data['agents'] = $this->user->get('', '', '', [ 'code !=' => 'null' ]);
+	    $this->dashboard_layout('pages/dashboard/agents', $data);
+		//  $this->output->enable_profiler(TRUE);
 	}
 	
 	public function activate(){

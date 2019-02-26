@@ -109,9 +109,37 @@ body {
     font-size: 1.125rem;
     text-anchor: middle;
   }
+    /* customization  */
+
+    .price-perEach{
+      display: flex;
+      font-size: 1rem;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+    .price-perEach .form-group{
+      margin: .5rem;
+    }
+    .price-perEach [type="submit"]{
+        font-size: .8rem !important;
+    }
+
+    .form-title{
+      font-size: 1.5rem;
+      font-weight: 400;
+    }
+    .form-title:nth-of-type(h4){
+      margin-top: .3rem;
+      color: green;
+    }
+
+    fieldset:last-child{
+      margin-top: 1.5rem;
+    }
 
   @media (min-width: 768px) {
     .bd-placeholder-img-lg {
       font-size: 3.5rem;
     }
   }
+

@@ -1,7 +1,7 @@
 
 <?php 
 
-   class CRUD_model extends CI_Model{
+   class Crud_model extends CI_Model{
 
      protected $_table = null;
      protected $_primary_key = null;
@@ -11,7 +11,7 @@
      }
 
      //get data
-     public function get($id = null, $order_by = null){
+     public function get($id = null, $order_by = null, $limit = null, $criterial = null){
 
            if( is_array($id)){    
                       
@@ -22,11 +22,18 @@
            if(is_numeric($id)){
              $this->db->where($this->_primary_key, $id);
            }
+           if(is_array($criterial)){
+               $this->db->where( $criterial);
+           }
+
            if($order_by != null  ){
              $this->db->order_by($order_by);
            }
-           $this->db->limit(70);
-           $result = $this->db->get($this->_table);
+           if($limit == null){
+               $limit = 60;
+           }
+           print_r(is_numeric($criterial));
+           $result = $this->db->get($this->_table, $limit);
                    
            return $result->result();
 
