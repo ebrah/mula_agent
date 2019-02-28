@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 09, 2019 at 09:44 AM
--- Server version: 10.1.30-MariaDB
--- PHP Version: 7.2.1
+-- Generation Time: Feb 28, 2019 at 07:21 AM
+-- Server version: 10.1.38-MariaDB
+-- PHP Version: 7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -40,6 +40,36 @@ CREATE TABLE `commission` (
   `total_commission` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+--
+-- Dumping data for table `commission`
+--
+
+INSERT INTO `commission` (`id`, `date`, `agentcode`, `startimes`, `azamtv`, `dstv`, `halotel`, `ttcl`, `total_commission`) VALUES
+(1, '2019-02-25', 100, 3, 2, 1, 2, 1, 100),
+(2, '2019-02-27', 100, 3, 12, 33, 32, 23, 52400);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `prices`
+--
+
+CREATE TABLE `prices` (
+  `id` int(11) NOT NULL,
+  `startimes` float NOT NULL,
+  `azamtv` float NOT NULL,
+  `dstv` float NOT NULL,
+  `halotel` float NOT NULL,
+  `ttcl` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Dumping data for table `prices`
+--
+
+INSERT INTO `prices` (`id`, `startimes`, `azamtv`, `dstv`, `halotel`, `ttcl`) VALUES
+(1, 1000, 1000, 300, 500, 500);
+
 -- --------------------------------------------------------
 
 --
@@ -60,7 +90,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `email`, `password`, `agent`, `active`, `code`) VALUES
-(22, 'adamson@gmail.com', '$2y$10$4gE28a.BCFtSTHa1tvbn6OeM3ksPGUBunGQkX5GL8H2jEL2TAJHEy', 0, 1, NULL);
+(22, 'adamson@gmail.com', '$2y$10$4gE28a.BCFtSTHa1tvbn6OeM3ksPGUBunGQkX5GL8H2jEL2TAJHEy', 0, 1, NULL),
+(23, 'jame@gmail.com', '$2y$10$IVnwg3WqClDJ/TVRqy285ut334lgZyupAWWIFx6O/ZA/1CagOc4dG', 0, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -77,6 +108,13 @@ CREATE TABLE `weekly` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
+-- Dumping data for table `weekly`
+--
+
+INSERT INTO `weekly` (`id`, `start_week_date`, `end_week_date`, `agentcode`, `weekly_commission`) VALUES
+(0, '2019-02-25', '2019-03-03', 100, 52500);
+
+--
 -- Indexes for dumped tables
 --
 
@@ -86,6 +124,12 @@ CREATE TABLE `weekly` (
 ALTER TABLE `commission`
   ADD PRIMARY KEY (`id`),
   ADD KEY `code` (`agentcode`);
+
+--
+-- Indexes for table `prices`
+--
+ALTER TABLE `prices`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `user`
@@ -109,13 +153,19 @@ ALTER TABLE `weekly`
 -- AUTO_INCREMENT for table `commission`
 --
 ALTER TABLE `commission`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `prices`
+--
+ALTER TABLE `prices`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Constraints for dumped tables

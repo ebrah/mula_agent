@@ -6,7 +6,7 @@ $(function(){
     
         const price = parseFloat( document.querySelector(`#${name}Price`).value ); 
       
-        const currentValue = parseFloat(document.querySelector(`#${currentInput}`).value); 
+        const currentValue = parseFloat(document.querySelector(`#${currentInput}`).value) || 0; 
 
         $(this).attr('calculated', price * currentValue);
           

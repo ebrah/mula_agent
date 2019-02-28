@@ -159,6 +159,9 @@
 
      //editing commission
      public function submit_edited_comm($data, $id){
+        // echo '<pre>';
+        // print_r( $data);
+        // print_r($id);
        
         $r = $this->update($data, $id['id']);
         if($r > 0){
@@ -169,7 +172,7 @@
             //     'end_week_date >= ' => $id['date'],
             //     'agentcode' => $id['agentcode']
             // ]);
-            $res_ = fetch_total_wk_comm(['date' => $id['date'], 'agentcode' => $id['agentcode']]);
+            $res_ = $this->fetch_total_wk_comm(['date' => $id['date'], 'agentcode' => $id['agentcode']]);
 
             $oldamount = 0;
 
@@ -200,6 +203,7 @@
             }
         }else{
             die('does not affect any row');
+            //redirect with message in production cases..
         }
      }
 

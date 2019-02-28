@@ -143,6 +143,7 @@
    public function edit_commission(){
        $id = $this->uri->segment(3);
        $data['comm'] = $this->commission->get($id);
+       $data['prices'] = $this->price_model->get();
        $this->dashboard_layout('pages/dashboard/edit_commission', $data);
         
    }

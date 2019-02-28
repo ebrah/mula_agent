@@ -117,7 +117,7 @@ body {
       align-items: flex-end;
       justify-content: space-between;
     }
-    .price-perEach .form-group{
+    .price-perEach .form-group, .price-perEach button {
       margin: .5rem;
     }
     .price-perEach [type="submit"]{
